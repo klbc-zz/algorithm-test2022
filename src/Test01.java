@@ -1,4 +1,6 @@
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /*
    15.三数之和
@@ -9,30 +11,79 @@ import java.util.List;
  */
 public class Test01 {
     public static void main(String[] args) {
-        List<List<Integer>> zeronums = new ArrayList<>();
+
         int[] nums =  {-1,0,1,2,-1,-4};
+        System.out.println(threeSum(nums));
+
+
+    }
+    public static List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> zeronums = new ArrayList<>();
+
         if(nums.length<3||nums==null){
-//            return zeronums;
+            return zeronums;
         }
+        int maxnum = nums[0]; ;
+        //冒泡排序
         for (int i=0;i<nums.length;i++) {
-            for (int j=i+1;j<nums.length;j++) {
-                for (int k=j+1;k<nums.length;i++) {
-                    if(nums[i]+nums[j]+nums[k]==0){
-                        List<Integer> zeronum = new ArrayList<>();
-                        zeronum.add(nums[i]);
-                        zeronum.add(nums[j]);
-                        zeronum.add(nums[k]);
-                        zeronums.add(zeronum);
-                    }
+            for (int j=0;j<nums.length-i-1;j++){
+                if(nums[j] > nums[j+1]){
+                    int temp = nums[j];
+                    nums[j] = nums[j+1];
+                    nums[j + 1] = temp;
+                }
+            }
+        }
+        int leftp,rightp;
+        //Arrays.sort();
+
+
+        for (int i=0;i<nums.length;i++) {
+            leftp = i+1;
+            rightp = nums.length-1;
+            if(nums[i]>0){
+                break;
+            }
+
+            if(i>0&&nums[i]==nums[i-1]){
+                continue;
+            }
+
+            while (leftp<rightp){
+            //for (int j=0;j<nums.length-i-1;j++) {
+                int sum = nums[leftp]+nums[rightp]+nums[i];
+                if(rightp==leftp){
+                    break;
+                }
+                if(sum==0){
+
+
+                    List<Integer> zeronum = new ArrayList<>();
+                    zeronum.add(nums[i]);
+                    zeronum.add(nums[leftp]);
+                    zeronum.add(nums[rightp]);
+                    zeronums.add(zeronum);
+                    //去重
+                    while (leftp<rightp && nums[leftp] == nums[leftp+1]) leftp++;
+                    while (leftp<rightp && nums[rightp] == nums[rightp-1]) rightp--;
+                    leftp++;
+                    rightp--;
 
                 }
+                if(sum>0){
+                    rightp--;
+                }else if (sum<0){
+                    leftp++;
+                }
+
+
+
 
             }
 
 
-
         }
-        System.out.println(zeronums);
+        return zeronums;
 
 
     }
